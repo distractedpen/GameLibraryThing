@@ -45,25 +45,45 @@ def get_db():
 db_dependency = Annotated[Session, Depends(get_db)]
 
 
-@app.post("/games/", status_code=status.HTTP_201_CREATED)
+@app.post("/api/games/", status_code=status.HTTP_201_CREATED)
 async def create_game(game: GameBase, db: db_dependency):
     db_game = models.Game(**game.model_dump())
     db.add(db_game)
     db.commit()
 
 
-@app.get("/games/{game_id}", status_code=status.HTTP_200_OK)
+@app.get("/api/games/{game_id}", status_code=status.HTTP_200_OK)
 async def get_games(game_id: int, db: db_dependency):
     game = db.query(models.Game).filter(models.Game.id == game_id).first()
     if game is None:
-        raise HTTPException(status_code=status.HTTP_404)
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     return game
 
 
-@app.get("/games/", status_code=status.HTTP_200_OK)
+@app.get("/api/games/", status_code=status.HTTP_200_OK)
 async def get_all_games(db: db_dependency):
     games = db.query(models.Game).all()
     return games
+
+
+@app.put("/api/games/{game_id}", status_code=status.HTTP_200_OK)
+async def update_game(game_id: int, new_game: GameBase, db: db_dependency):
+    old_game = db.query(models.Game).filter(models.Game.id == game_id).first()
+    if old_game is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+    db.delete(old_game)
+    db_new_game = models.Game(**new_game.model_dump())
+    db.add(db_new_game)
+    db.commit()
+
+@app.delete("/api/games/{game_id}", status_code=status.HTTP_200_OK)
+async def delete_game(game_id: int, db:db_dependency):
+    old_game = db.query(models.Game).filter(models.Game.id == game_id).first()
+    if old_game is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+    db.delete(old_game)
+    db.commit()
+
 
 
 if __name__ == '__main__':

@@ -2,33 +2,31 @@ import {Game} from "../util/types.ts";
 import GameCard from "../components/GameCard.tsx";
 import CardContainer from "../components/CardContainer.tsx";
 import React, {useState} from "react";
-import axios from "axios";
-
+import {Link, useLocation} from "react-router-dom";
+import { getGames } from "../util/api.ts";
 
 export default function Library() {
 
     const [gameList, setGameList] = useState<Game[]>([]);
+    const location = useLocation();
+
 
     React.useEffect(() => {
-        axios.get('/games/').then((response) => {
-            let gameList: Game[] = [];
-            console.log(response.data);
-            response.data.forEach((game: Game) => gameList.push(game));
-            setGameList(gameList);
-        });
+        if ((location.state && location.state.reload === true) || (!location.state)) {
+            getGames().then((gameList) => setGameList(gameList));
+        }
     }, []);
 
     return (
         <div className="flex flex-col h-screen w-screen items-center justify-center">
-            {/* Game Display */}
             <div className="w-2/3 flex flex-row justify-between">
                 <h1 className="text-2xl">Game Library</h1>
-                <button className="rounded bg-blue-300 text-2xl p-2">Add Game</button>
+                <Link to={"game"} className="rounded bg-blue-300 text-2xl p-2">Add Game</Link>
             </div>
             <CardContainer>
-                {gameList.map((game, index) => {
+                {gameList.map((game)  => {
                     return (
-                        <GameCard game={game} key={index} />
+                       <GameCard key={game.id} game={game} size={"small"}  />
                     );
                 })}
             </CardContainer>
