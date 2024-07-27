@@ -2,8 +2,9 @@ import React, {useState} from "react";
 import {Game} from "../util/types.ts";
 import {getGameById} from "../util/api.ts";
 import { postGame, updateGame } from "../util/api.ts";
+import Button from "./Button.tsx";
 
-export default function GameEntryForm({editMode, gameId}: { editMode: boolean, gameId?: string }) {
+export default function GameEntryForm({editMode, gameId}: { editMode: boolean, gameId?: number}) {
 
     const [name, setName] = useState("");
     const [developer, setDeveloper] = useState("");
@@ -29,7 +30,7 @@ export default function GameEntryForm({editMode, gameId}: { editMode: boolean, g
         };
 
         if (editMode && gameId) {
-            updateGame(parseInt(gameId), uGame).then(() => {
+            updateGame(gameId, uGame).then(() => {
                 location.pathname = "/library";
             });
         } else {
@@ -45,38 +46,45 @@ export default function GameEntryForm({editMode, gameId}: { editMode: boolean, g
     }
 
     return (
-        <form className={"grid grid-cols-2 gap-3 w-1/3 rounded border-solid border-gray-500 border-2 p-2"}>
-            <label className={"ml-2 mr-20"}>Name:</label>
-            <input
-                name={"name"}
-                type={"text"}
-                className={"inline-block"}
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required/>
-            <label className={"ml-2 mr-20"}>Developer:</label>
-            <input
-                name={"developer"}
-                type={"text"}
-                className={"inline-block"}
-                value={developer}
-                onChange={(e) => setDeveloper(e.target.value)}
-                required/>
-            <label className={"ml-2 mr-20"}>Status:</label>
-            <select
-                name={"status"}
-                value={status}
-                className={"text-center text-gray-500 bg-white"}
-                onChange={(e) => setStatus(e.target.value)}
-            >
-                <option value={"completed"}>Completed</option>
-                <option value={"inprogress"}>In Progress</option>
-                <option value={"own"}>Own</option>
-                <option value={"want"}>Want</option>
-                <option value={"dropped"}>Dropped</option>
-            </select>
-            <button className={"w-full bg-blue-400 rounded "} onClick={(e) => handleSubmit(e)}>{editMode ? "Update" : "Add" }</button>
-            <button className={"w-full bg-red-500 rounded"} onClick={(e) => handleCancel(e)}>Cancel</button>
-        </form>
+        <div className={"flex flex-row flex-wrap bg-magnolia rounded-2xl w-2/5 h-3/5 justify-around"}>
+            <h1 className={"text-6xl text-center items-start flex-initial w-full"}>{editMode ? "Edit Game" : "Add Game"}</h1>
+            <div className={"flex justify-start w-full"}>
+                <label className={"text-xl ml-4 mr-10"}>Name:</label>
+                <input
+                    name={"name"}
+                    type={"text"}
+                    className={"border-solid border-black border flex-initial w-3/4 h-min"}
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required/>
+            </div>
+            <div className={"flex justify-start w-full"}>
+                <label className={"text-xl ml-4 mr-10"}>Developer:</label>
+                <input
+                    name={"developer"}
+                    type={"text"}
+                    className={"border-solid border-black border flex-initial w-3/4 h-min"}
+                    value={developer}
+                    onChange={(e) => setDeveloper(e.target.value)}
+                    required/>
+            </div>
+            <div className={"flex justify-start w-full"}>
+                <label className={"text-xl ml-4 mr-10"}>Status:</label>
+                <select
+                    name={"status"}
+                    value={status}
+                    className={"border-solid border-black border flex-initial w-3/4 h-min"}
+                    onChange={(e) => setStatus(e.target.value)}
+                >
+                    <option value={"completed"}>Completed</option>
+                    <option value={"inprogress"}>In Progress</option>
+                    <option value={"own"}>Own</option>
+                    <option value={"want"}>Want</option>
+                    <option value={"dropped"}>Dropped</option>
+                </select>
+            </div>
+            <Button handleClick={handleSubmit}>{editMode ? "Update" : "Add"}</Button>
+            <Button handleClick={handleCancel}>Cancel</Button>
+        </div>
     )
 }

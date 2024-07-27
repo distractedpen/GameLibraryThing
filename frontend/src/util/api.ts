@@ -18,7 +18,7 @@ async function getGames(): Promise<Game[]> {
     return gameList;
 }
 
-async function getGameById(game_id: string): Promise<Game> {
+async function getGameById(game_id: number): Promise<Game> {
     const response = await axios.get(`/games/${game_id}`);
     return await response.data;
 }
@@ -40,7 +40,7 @@ async function updateGame(game_id: number, game: Game) {
     console.log(response.statusText);
 }
 
-async function deleteGame(game_id: string) {
+async function deleteGame(game_id: number) {
     const response = await axios.delete(`/games/${game_id}`);
     if (response.status != 200) {
         // Handle Error!

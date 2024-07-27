@@ -9,6 +9,7 @@ import Root from "./routes/root.tsx";
 import GameViewer from "./routes/view-game.tsx";
 import { apiConfig } from "./util/api.ts";
 import GameEditor from "./routes/edit-game.tsx";
+import LoginPage from "./routes/login-page.tsx";
 
 apiConfig();
 
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
         path: "/",
         element: <Root/>,
         errorElement: <ErrorPage/>,
+    },
+    {
+        path: "/login",
+        element: <LoginPage/>
     },
     {
         path: "/library",
