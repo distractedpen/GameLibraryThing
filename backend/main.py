@@ -76,14 +76,14 @@ async def update_game(game_id: int, new_game: GameBase, db: db_dependency):
     db.add(db_new_game)
     db.commit()
 
+
 @app.delete("/api/games/{game_id}", status_code=status.HTTP_200_OK)
-async def delete_game(game_id: int, db:db_dependency):
+async def delete_game(game_id: int, db: db_dependency):
     old_game = db.query(models.Game).filter(models.Game.id == game_id).first()
     if old_game is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     db.delete(old_game)
     db.commit()
-
 
 
 if __name__ == '__main__':

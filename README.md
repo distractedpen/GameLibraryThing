@@ -8,11 +8,12 @@ Requirements:
 - NodeJS
 
 Rename `.env.sample` to `.env` file in root dir.  
-Update database info as needed.
 
 For backend:  
 `python3 -m venv .venv` in backend dir  
 `pip install -r requirements.txt`
+
+Postgresql is currently assumed to be your database. `psycopg2-binary` is listed in requirements.txt. If you wish to use another database, remove this dep.
 
 
 For frontend:  
