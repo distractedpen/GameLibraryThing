@@ -1,8 +1,6 @@
 ﻿using backend.Data;
-using backend.Dtos;
 using backend.Dtos.Game;
 using backend.Interfaces;
-using backend.Mappers;
 using backend.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,12 +9,12 @@ namespace backend.Repositories;
 public class GameRepository : IGameRepository
 {
     private readonly ApplicationDbContext _context;
-    
+
     public GameRepository(ApplicationDbContext context)
     {
         _context = context;
     }
-    
+
     public async Task<List<Game>> GetAllAsync()
     {
         return await _context.Games.ToListAsync();
@@ -37,29 +35,25 @@ public class GameRepository : IGameRepository
 
     public async Task<Game?> UpdateAsync(int id, UpdateGameDto updateGameDto)
     {
-        
         var existingGame = await _context.Games.FirstOrDefaultAsync(g => g.Id == id);
 
         if (existingGame == null)
             return null;
-        
+
         existingGame.Name = updateGameDto.Name;
         existingGame.Developer = updateGameDto.Developer;
         existingGame.Status = updateGameDto.Status;
-        
+
         await _context.SaveChangesAsync();
-        
+
         return existingGame;
     }
 
     public async Task<Game?> DeleteAsync(int id)
     {
         var game = await _context.Games.FirstOrDefaultAsync(g => g.Id == id);
-        if (game == null)
-        {
-            return null;
-        }
-        
+        if (game == null) return null;
+
         _context.Remove(game);
         await _context.SaveChangesAsync();
 

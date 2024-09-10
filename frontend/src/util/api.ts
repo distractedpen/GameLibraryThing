@@ -5,7 +5,7 @@ let api_config_set = false;
 
 function apiConfig() {
     if (!api_config_set) {
-        axios.defaults.baseURL = `http://${import.meta.env.VITE_API_HOST}:${import.meta.env.VITE_API_PORT}/api`;
+        axios.defaults.baseURL = "http://localhost:8004/api"; 
         console.log(axios.defaults.baseURL)
     }
 }

@@ -45,13 +45,13 @@ export default function LoginForm() {
             </div>
             {!isNewUser ? (
                 <>
-                    <Button handleClick={handleSignUp}>Sign Up</Button>
-                    <Button handleClick={handleSubmit}>Login</Button>
+                    <Button isLink={false} handleClick={handleSignUp}>Sign Up</Button>
+                    <Button isLink={false} handleClick={handleSubmit}>Login</Button>
                 </>
             ) : (
                 <>
-                    <Button handleClick={handleSubmit}>Login</Button>
-                    <Button handleClick={handleCancel}>Cancel</Button>
+                    <Button isLink={false} handleClick={handleSubmit}>Login</Button>
+                    <Button isLink={false} handleClick={handleCancel}>Cancel</Button>
                 </>
             )
             }

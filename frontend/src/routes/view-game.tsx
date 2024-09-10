@@ -22,7 +22,7 @@ export default function GameViewer() {
     return (
         <div className={"flex flex-col h-screen w-screen bg-[#DFDFDF] justify-center items-center"}>
             <div className={"m-2 max-w-2xl"}>
-                <Button className={""} isLink={true} linkTo={"/library"}>Library</Button>
+                <Button isLink={true} linkTo={"/library"}>Library</Button>
             </div>
             <div className={"flex w-5/6 h-5/6 justify-center items-center bg-magnolia"}>
                 <div className={"flex items-center justify-evenly"}>

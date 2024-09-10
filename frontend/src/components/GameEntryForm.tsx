@@ -83,8 +83,8 @@ export default function GameEntryForm({editMode, gameId}: { editMode: boolean, g
                     <option value={"dropped"}>Dropped</option>
                 </select>
             </div>
-            <Button handleClick={handleSubmit}>{editMode ? "Update" : "Add"}</Button>
-            <Button handleClick={handleCancel}>Cancel</Button>
+            <Button isLink={false} handleClick={handleSubmit}>{editMode ? "Update" : "Add"}</Button>
+            <Button isLink={false} handleClick={handleCancel}>Cancel</Button>
         </div>
     )
 }

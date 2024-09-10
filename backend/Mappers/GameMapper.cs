@@ -1,5 +1,4 @@
-﻿using backend.Dtos;
-using backend.Dtos.Game;
+﻿using backend.Dtos.Game;
 using backend.Models;
 
 namespace backend.Mappers;
@@ -16,7 +15,7 @@ public static class GameMapper
             Status = game.Status
         };
     }
-    
+
     public static Game ToGameFromCreateDto(this CreateGameDto createGameDto)
     {
         return new Game

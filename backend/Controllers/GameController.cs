@@ -1,8 +1,6 @@
-﻿using backend.Dtos;
-using backend.Dtos.Game;
+﻿using backend.Dtos.Game;
 using backend.Interfaces;
 using backend.Mappers;
-using backend.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers;
@@ -13,7 +11,7 @@ public class GameController : ControllerBase
 {
     private readonly IGameRepository _gameRepository;
     private readonly ILogger<GameController> _logger;
-    
+
     public GameController(IGameRepository gameRepository, ILogger<GameController> logger)
     {
         _gameRepository = gameRepository;
@@ -35,10 +33,7 @@ public class GameController : ControllerBase
     {
         _logger.LogInformation("Starting GetById");
         var game = await _gameRepository.GetByIdAsync(id);
-        if (game == null)
-        {
-            return NotFound();
-        }
+        if (game == null) return NotFound();
 
         return Ok(game.ToGameDto());
     }
@@ -58,11 +53,8 @@ public class GameController : ControllerBase
     {
         var updatedGame = await _gameRepository.UpdateAsync(id, updateGameDto);
 
-        if (updatedGame == null)
-        {
-            return NotFound();
-        }
-        
+        if (updatedGame == null) return NotFound();
+
         return Ok(updatedGame.ToGameDto());
     }
 
@@ -72,10 +64,7 @@ public class GameController : ControllerBase
     public async Task<IActionResult> Delete([FromRoute] int id)
     {
         var game = await _gameRepository.DeleteAsync(id);
-        if (game == null)
-        {
-            return NotFound();
-        }
+        if (game == null) return NotFound();
         return NoContent();
     }
 }
