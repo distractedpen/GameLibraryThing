@@ -1,16 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace backend.Dtos;
+namespace backend.Dtos.Game;
 
 public class CreateGameDto
 {
     [Required]
     [MaxLength(50, ErrorMessage = "Name cannot be longer than 50 characters.")]
-    public string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
     [Required]
     [MaxLength(50, ErrorMessage = "Name cannot be longer than 50 characters.")]
-    public string Developer { get; set; }
+    public string Developer { get; set; } = string.Empty;
     [Required]
     [MaxLength(50, ErrorMessage = "Name cannot be longer than 50 characters.")]
-    public string Status { get; set; }
+    public string Status { get; set; } = string.Empty;
 }

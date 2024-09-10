@@ -1,4 +1,5 @@
 ﻿using backend.Dtos;
+using backend.Dtos.Game;
 using backend.Models;
 
 namespace backend.Interfaces;

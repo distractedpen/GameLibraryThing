@@ -1,5 +1,6 @@
 ﻿using backend.Data;
 using backend.Dtos;
+using backend.Dtos.Game;
 using backend.Interfaces;
 using backend.Mappers;
 using backend.Models;
