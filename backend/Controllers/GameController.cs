@@ -1,4 +1,7 @@
-﻿using backend.Interfaces;
+﻿using backend.Dtos;
+using backend.Interfaces;
+using backend.Mappers;
+using backend.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers;
@@ -22,6 +25,56 @@ public class GameController : ControllerBase
     {
         _logger.LogInformation("Starting GetAll");
         var games = await _gameRepository.GetAllAsync();
-        return Ok(games);
+        var gameDtos = games.Select(game => game.ToGameDto());
+        return Ok(gameDtos);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById([FromRoute] int id)
+    {
+        _logger.LogInformation("Starting GetById");
+        var game = await _gameRepository.GetByIdAsync(id);
+        if (game == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(game.ToGameDto());
+    }
+
+
+    [HttpPost]
+    public async Task<IActionResult> Create([FromBody] CreateGameDto createGameDto)
+    {
+        var newGameModel = createGameDto.ToGameFromCreateDto();
+        await _gameRepository.CreateAsync(newGameModel);
+        return CreatedAtAction(nameof(GetById), new { id = newGameModel.Id }, newGameModel.ToGameDto());
+    }
+
+    [HttpPut]
+    [Route("{id}")]
+    public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateGameDto updateGameDto)
+    {
+        var updatedGame = await _gameRepository.UpdateAsync(id, updateGameDto);
+
+        if (updatedGame == null)
+        {
+            return NotFound();
+        }
+        
+        return Ok(updatedGame.ToGameDto());
+    }
+
+
+    [HttpDelete]
+    [Route("{id}")]
+    public async Task<IActionResult> Delete([FromRoute] int id)
+    {
+        var game = await _gameRepository.DeleteAsync(id);
+        if (game == null)
+        {
+            return NotFound();
+        }
+        return NoContent();
     }
 }
