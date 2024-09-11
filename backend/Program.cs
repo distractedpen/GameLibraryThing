@@ -15,7 +15,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddCors(options => { options.AddDefaultPolicy(policy => { policy.AllowAnyOrigin(); }); });
+builder.Services.AddCors(options => { options.AddDefaultPolicy(policy => { policy.WithOrigins(["http://localhost:8003"]).AllowAnyHeader(); }); });
 
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
 {
