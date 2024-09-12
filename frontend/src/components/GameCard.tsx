@@ -6,9 +6,10 @@ import trashIcon from "../assets/trash_icon.png";
 
 const handleDelete = (game_id: number | undefined) => {
     // TODO: Add confirmation dialog
+    console.log(game_id);
     if (game_id !== undefined) {
         deleteGame(game_id).then(() => {
-            location.pathname = "/library";
+            location.reload();
         });
     }
     else {

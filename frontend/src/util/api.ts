@@ -1,7 +1,7 @@
 import axios from "axios";
 import {Game} from "./types.ts";
 
-let api_config_set = false;
+const api_config_set = false;
 
 function apiConfig() {
     if (!api_config_set) {
@@ -12,8 +12,8 @@ function apiConfig() {
 
 // Game Get Functions
 async function getGames(): Promise<Game[]> {
-    let response = await axios.get('/games');
-    let gameList: Game[] = [];
+    const response = await axios.get('/games');
+    const gameList: Game[] = [];
     response.data.forEach((game: Game) => gameList.push(game));
     return gameList;
 }
@@ -42,7 +42,7 @@ async function updateGame(game_id: number, game: Game) {
 
 async function deleteGame(game_id: number) {
     const response = await axios.delete(`/games/${game_id}`);
-    if (response.status != 200) {
+    if (response.status != 204) {  // HTTP 204 NO CONTENT
         // Handle Error!
         throw new Error("Error Deleting game!");
     }

@@ -4,16 +4,17 @@ Personal Game Library Manager. Track the games you own/want and if you have comp
 
 # Dev Setup
 Requirements:
-- Python 3.12
-- NodeJS
-
-Rename `.env.sample` to `.env` file in root dir.  
+- .Net 8.0+
+- Nodejs
+- SQL Server Developer 2022
 
 For backend:  
-`python3 -m venv .venv` in backend dir  
-`pip install -r requirements.txt`
+This project uses SQL Server 2022 as the database for development.
+Make sure that the database `gamelibrary` exists in your local instance.
+Run the following command to `dotnet database update` to build the tables for the database
 
-Postgresql is currently assumed to be your database. `psycopg2-binary` is listed in requirements.txt. If you wish to use another database, remove this dep.
+Run `dotnet run watch` to start the backend
+
 
 
 For frontend:  
