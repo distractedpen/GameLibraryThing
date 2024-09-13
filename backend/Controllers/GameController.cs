@@ -1,6 +1,7 @@
 ﻿using backend.Dtos.Game;
 using backend.Interfaces;
 using backend.Mappers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers;
@@ -20,6 +21,7 @@ public class GameController : ControllerBase
 
 
     [HttpGet]
+    [Authorize]
     public async Task<IActionResult> GetAll()
     {
         _logger.LogInformation("Starting GetAll");
