@@ -1,30 +1,23 @@
 import axios from "axios";
-import {Game} from "./types.ts";
+import {Game} from "../library";
 
-const api_config_set = false;
-
-function apiConfig() {
-    if (!api_config_set) {
-        axios.defaults.baseURL = "http://localhost:8004/api"; 
-        console.log(axios.defaults.baseURL)
-    }
-}
+const apiUrl = "http://localhost:8004/api";
 
 // Game Get Functions
 async function getGames(): Promise<Game[]> {
-    const response = await axios.get('/games');
+    const response = await axios.get(apiUrl + '/games');
     const gameList: Game[] = [];
     response.data.forEach((game: Game) => gameList.push(game));
     return gameList;
 }
 
 async function getGameById(game_id: number): Promise<Game> {
-    const response = await axios.get(`/games/${game_id}`);
+    const response = await axios.get(apiUrl + `/games/${game_id}`);
     return await response.data;
 }
 
 async function postGame(game: Game) {
-    const response = await axios.post("/games", game);
+    const response = await axios.post(apiUrl + "/games", game);
     if (response.status != 201) {
         // Handle Error!
         throw new Error("Error Saving Game!");
@@ -33,7 +26,7 @@ async function postGame(game: Game) {
 }
 
 async function updateGame(game_id: number, game: Game) {
-    const response = await axios.put(`/games/${game_id}`, game);
+    const response = await axios.put(apiUrl + `/games/${game_id}`, game);
     if (response.status != 200) {
         throw new Error("Error Updating Game!");
     }
@@ -41,7 +34,7 @@ async function updateGame(game_id: number, game: Game) {
 }
 
 async function deleteGame(game_id: number) {
-    const response = await axios.delete(`/games/${game_id}`);
+    const response = await axios.delete(apiUrl + `/games/${game_id}`);
     if (response.status != 204) {  // HTTP 204 NO CONTENT
         // Handle Error!
         throw new Error("Error Deleting game!");
@@ -50,7 +43,6 @@ async function deleteGame(game_id: number) {
 }
 
 export {
-    apiConfig,
     getGames,
     getGameById,
     postGame,

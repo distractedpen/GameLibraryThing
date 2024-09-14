@@ -21,7 +21,6 @@ public class GameController : ControllerBase
 
 
     [HttpGet]
-    [Authorize]
     public async Task<IActionResult> GetAll()
     {
         _logger.LogInformation("Starting GetAll");

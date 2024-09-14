@@ -4,13 +4,18 @@ using backend.Interfaces;
 using backend.Models;
 using backend.Repositories;
 using backend.Service;
+using backend.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
+
+
+// Setup .env
+var dotenv = Path.Combine("..", ".env");
+DotEnv.Load(dotenv);
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -55,7 +60,7 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        policy.WithOrigins(["http://localhost:8003"])
+        policy.WithOrigins(["http://localhost:8003", "https://id.twitch.tv/", "https://api.igdb.com/"])
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
@@ -73,6 +78,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddScoped<IGameRepository, GameRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IIGDBService, IGDBService>();
 
 builder.Services.AddIdentity<User, IdentityRole>(options =>
 {

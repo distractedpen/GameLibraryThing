@@ -1,7 +1,7 @@
 import React, {useState} from "react";
-import {Game} from "../util/types.ts";
-import {getGameById} from "../util/api.ts";
-import { postGame, updateGame } from "../util/api.ts";
+import {Game} from "../../library.d.ts";
+import {getGameById} from "../api.tsx";
+import { postGame, updateGame } from "../api.tsx";
 import Button from "./Button.tsx";
 
 export default function GameEntryForm({editMode, gameId}: { editMode: boolean, gameId?: number}) {

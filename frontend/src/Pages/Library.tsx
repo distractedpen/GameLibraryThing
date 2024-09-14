@@ -1,22 +1,21 @@
-import {Game} from "../util/types.ts";
+import {Game} from "../../library";
 import GameCard from "../components/GameCard.tsx";
 import CardContainer from "../components/CardContainer.tsx";
 import React, {useState} from "react";
 import {useLocation} from "react-router-dom";
-import { getGames } from "../util/api.ts";
+import { getGames } from "../api.tsx";
 import Button from "../components/Button.tsx";
+import {useAuth} from "../Context/useAuth.tsx";
 
 export default function Library() {
 
     const [gameList, setGameList] = useState<Game[]>([]);
     const rLocation = useLocation();
-    const [user, _setUser] = useState("User");
+    const { user, logout } = useAuth();
 
     function handleLogout() {
-        console.log("Logout");
-        location.pathname = "/";
+        logout();
     }
-
 
     React.useEffect(() => {
         if ((rLocation.state && rLocation.state.reload === true) || (!rLocation.state)) {
@@ -27,7 +26,7 @@ export default function Library() {
     return (
         <div className="flex flex-col h-screen w-screen items-center justify-center bg-[#DFDFDF]">
             <div className="flex justify-evenly items-center w-5/6">
-                <h1 className="text-4xl flex-init w-2/3">{user}'s Library</h1>
+                <h1 className="text-4xl flex-init w-2/3">{user?.userName}'s Library</h1>
                 <Button isLink={true} linkTo={"game"}>Add Game</Button>
                 <Button isLink={false} handleClick={handleLogout}>Logout</Button>
             </div>

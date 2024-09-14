@@ -1,6 +1,6 @@
-import {Game} from "../util/types.ts";
+import {Game} from "../../library.d.ts";
 import {Link} from "react-router-dom";
-import { deleteGame } from "../util/api.ts";
+import { deleteGame } from "../api.tsx";
 import editIcon from "../assets/edit_icon.png";
 import trashIcon from "../assets/trash_icon.png";
 

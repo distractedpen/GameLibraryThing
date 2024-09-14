@@ -1,8 +1,8 @@
 import React, {Suspense, useState} from 'react';
-import {Game} from "../util/types.ts";
+import {Game} from "../../library.d.ts";
 import {useParams} from "react-router-dom";
 import GameCard from "../components/GameCard.tsx";
-import { getGameById } from "../util/api.ts";
+import { getGameById } from "../api.tsx";
 import Button from "../components/Button.tsx";
 
 
