@@ -16,11 +16,10 @@ public class LibraryRespository : ILibraryRepository
     public async Task<List<Game>> GetUserLibrary(User user)
     {
         return await _context.Libraries.Where(u => u.UserId == user.Id)
-            .Select(game => new Game
+            .Select(library => new Game
             {
-                Id = game.Game.Id,
-                Name = game.Game.Name,
-                Developer = game.Game.Developer,
+                Id = library.Game.Id,
+                Name = library.Game.Name,
             }).ToListAsync();
     }
 
@@ -31,9 +30,9 @@ public class LibraryRespository : ILibraryRepository
         return library;
     }
 
-    public async Task<Library?> DeleteAsync(User user, string gameName)
+    public async Task<Library?> DeleteAsync(User user, long gameId)
     {
-        var library = await _context.Libraries.FirstOrDefaultAsync(u => u.UserId == user.Id && u.Game.Name.ToLower() == gameName.ToLower());
+        var library = await _context.Libraries.FirstOrDefaultAsync(u => u.UserId == user.Id && u.Game.Id == gameId);
 
         if (library == null) return null;
         

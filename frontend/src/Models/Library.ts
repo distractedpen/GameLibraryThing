@@ -2,7 +2,6 @@
 export type LibraryGet = {
     id: number;
     name: string;
-    developer: string;
 }
 
 export type LibraryPost = {

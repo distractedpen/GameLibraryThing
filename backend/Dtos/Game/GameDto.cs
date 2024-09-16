@@ -2,8 +2,7 @@
 
 public class GameDto
 {
-    public int Id { get; set; }
+    public long Id { get; set; }
+    public long GameId { get; set; } = -1;
     public string Name { get; set; } = string.Empty;
-    public string Developer { get; set; } = string.Empty;
-    public string Status { get; set; } = string.Empty;
 }

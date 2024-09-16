@@ -8,5 +8,5 @@ public interface ILibraryRepository
     
     public Task<Library> CreateAsync(Library library);
     
-    public Task<Library?> DeleteAsync(User user, string gameId);
+    public Task<Library?> DeleteAsync(User user, long gameId);
 }

@@ -1,5 +1,4 @@
-﻿using System.Collections.Immutable;
-using backend.Models;
+﻿using backend.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +19,8 @@ public class ApplicationDbContext : IdentityDbContext<User>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<Game>().Property(g => g.Id).ValueGeneratedNever();
 
         modelBuilder.Entity<Library>(x => x.HasKey(p => new { p.UserId, p.GameId }));
         

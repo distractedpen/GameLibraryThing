@@ -1,5 +1,4 @@
-﻿using backend.Data;
-using backend.Extensions;
+﻿using backend.Extensions;
 using backend.Interfaces;
 using backend.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -15,12 +14,14 @@ public class LibraryController : ControllerBase
     private readonly UserManager<User> _userManager;
     private readonly IGameRepository _gameRepository;
     private readonly ILibraryRepository _libraryRepository;
+    private readonly IIgdbService _igdbService;
     
-    public LibraryController(UserManager<User> userManager, IGameRepository gameRepository, ILibraryRepository libraryRepository)
+    public LibraryController(UserManager<User> userManager, IGameRepository gameRepository, ILibraryRepository libraryRepository, IIgdbService igdbService)
     {
         _userManager = userManager;
         _gameRepository = gameRepository;
         _libraryRepository = libraryRepository;
+        _igdbService = igdbService;
     }
 
     [HttpGet]
@@ -35,17 +36,28 @@ public class LibraryController : ControllerBase
 
     [HttpPost]
     [Authorize]
-    public async Task<IActionResult> AddLibrary([FromQuery] string gameName)
+    public async Task<IActionResult> AddLibrary([FromQuery] long gameId)
     {
+        // check if game exists in local db
+        var game = await _gameRepository.GetByIdAsync(gameId);
+        if (game == null)
+        {
+            var igdbGame = await _igdbService.GetGameById(gameId);
+            if (igdbGame == null) return NotFound("Game not found");
+
+            game = new Game
+            {
+                Id = igdbGame.Id == null ? -1 : igdbGame.Id.Value,
+                Name = igdbGame.Name,
+            };
+            await _gameRepository.CreateAsync(game);
+        } 
+        
         var username = User.GetUsername();
         var appUser = await _userManager.FindByNameAsync(username);
-        var game = await _gameRepository.GetByNameAsync(gameName);
-
-        if (game == null) return BadRequest("Game not found");
-        
         var userLibrary = await _libraryRepository.GetUserLibrary(appUser);
 
-        if (userLibrary.Any(x => x.Name.Equals(gameName, StringComparison.CurrentCultureIgnoreCase)))
+        if (userLibrary.Any(x => x.Id == gameId))
         {
             BadRequest("Cannot add duplicate game");
         }
@@ -63,18 +75,18 @@ public class LibraryController : ControllerBase
 
     [HttpDelete]
     [Authorize]
-    public async Task<IActionResult> DeleteLibrary([FromQuery] string gameName)
+    public async Task<IActionResult> DeleteLibrary([FromQuery] long gameId)
     {
         var username = User.GetUsername();
         var appUser = await _userManager.FindByNameAsync(username);
         
         var userPortfolio = await _libraryRepository.GetUserLibrary(appUser);
         
-        var filteredGame =  userPortfolio.Where(x => x.Name.Equals(gameName, StringComparison.CurrentCultureIgnoreCase)).ToList();
+        var filteredGame =  userPortfolio.Where(x => x.Id == gameId).ToList();
 
         if (filteredGame.Count == 1)
         {
-            await _libraryRepository.DeleteAsync(appUser, gameName);
+            await _libraryRepository.DeleteAsync(appUser, gameId);
         }
         else
         {
@@ -83,5 +95,4 @@ public class LibraryController : ControllerBase
 
         return Ok();
     }
-    
 }

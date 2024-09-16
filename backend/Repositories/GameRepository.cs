@@ -1,5 +1,4 @@
 ﻿using backend.Data;
-using backend.Dtos.Game;
 using backend.Interfaces;
 using backend.Models;
 using Microsoft.EntityFrameworkCore;
@@ -20,7 +19,7 @@ public class GameRepository : IGameRepository
         return await _context.Games.ToListAsync();
     }
 
-    public async Task<Game?> GetByIdAsync(int id)
+    public async Task<Game?> GetByIdAsync(long id)
     {
         return await _context.Games.FirstOrDefaultAsync(g => g.Id == id);
     }
@@ -32,28 +31,16 @@ public class GameRepository : IGameRepository
 
     public async Task<Game> CreateAsync(Game gameModel)
     {
-        // TODO: Check if object with same data exists already, if so, return existing object
+        if (await GameExists(gameModel.Id)) return gameModel;
+        
         await _context.Games.AddAsync(gameModel);
         await _context.SaveChangesAsync();
+
         return gameModel;
     }
 
-    public async Task<Game?> UpdateAsync(int id, UpdateGameDto updateGameDto)
-    {
-        var existingGame = await _context.Games.FirstOrDefaultAsync(g => g.Id == id);
 
-        if (existingGame == null)
-            return null;
-
-        existingGame.Name = updateGameDto.Name;
-        existingGame.Developer = updateGameDto.Developer;
-
-        await _context.SaveChangesAsync();
-
-        return existingGame;
-    }
-
-    public async Task<Game?> DeleteAsync(int id)
+    public async Task<Game?> DeleteAsync(long id)
     {
         var game = await _context.Games.FirstOrDefaultAsync(g => g.Id == id);
         if (game == null) return null;
@@ -64,9 +51,8 @@ public class GameRepository : IGameRepository
         return game;
     }
 
-    public async Task<bool> GameExists(int id)
+    public async Task<bool> GameExists(long id)
     {
         return await _context.Games.AnyAsync(e => e.Id == id);
     }
-
 }

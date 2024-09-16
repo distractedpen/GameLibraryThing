@@ -6,8 +6,7 @@ namespace backend.Models;
 public class Library
 {
     public string UserId { get; set; }
-    public int  GameId { get; set; }
-    
+    public long GameId { get; set; }
     public User User { get; set; }
     public Game Game { get; set; }
 }

@@ -76,10 +76,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
-builder.Services.AddScoped<IGameRepository, GameRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
-builder.Services.AddScoped<IIGDBService, IGDBService>();
+builder.Services.AddScoped<IIgdbService, IgdbService>();
 builder.Services.AddScoped<ILibraryRepository, LibraryRespository>();
+builder.Services.AddScoped<IGameRepository, GameRepository>();
 
 builder.Services.AddIdentity<User, IdentityRole>(options =>
 {

@@ -1,71 +1,37 @@
-﻿using backend.Dtos.Game;
-using backend.Interfaces;
-using backend.Mappers;
-using Microsoft.AspNetCore.Authorization;
+﻿using backend.Interfaces;
+using backend.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers;
 
 [Route("api/games")]
-[ApiController]
 public class GameController : ControllerBase
 {
     private readonly IGameRepository _gameRepository;
-    private readonly ILogger<GameController> _logger;
-
-    public GameController(IGameRepository gameRepository, ILogger<GameController> logger)
+    private readonly IIgdbService _igdbService;
+    
+    public GameController(IGameRepository gameRepository, IIgdbService igdbService)
     {
-        _gameRepository = gameRepository;
-        _logger = logger;
+        _gameRepository = gameRepository;    
+        _igdbService = igdbService;
     }
 
-
-    [HttpGet]
-    public async Task<IActionResult> GetAll()
+    [HttpGet("{gameId:long}")]
+    public async Task<ActionResult<Game>> GetGameByIdAsync(long gameId)
     {
-        _logger.LogInformation("Starting GetAll");
-        var games = await _gameRepository.GetAllAsync();
-        var gameDtos = games.Select(game => game.ToGameDto());
-        return Ok(gameDtos);
-    }
+        // check if game exists in local db
+        var game = await _gameRepository.GetByIdAsync(gameId);
+        if (game != null) return Ok(game);
+        
+        var igdbGame = await _igdbService.GetGameById(gameId);
+        if (igdbGame == null) return NotFound("Game not found");
 
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetById([FromRoute] int id)
-    {
-        _logger.LogInformation("Starting GetById");
-        var game = await _gameRepository.GetByIdAsync(id);
-        if (game == null) return NotFound();
-
-        return Ok(game.ToGameDto());
-    }
-
-
-    [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateGameDto createGameDto)
-    {
-        var newGameModel = createGameDto.ToGameFromCreateDto();
-        await _gameRepository.CreateAsync(newGameModel);
-        return CreatedAtAction(nameof(GetById), new { id = newGameModel.Id }, newGameModel.ToGameDto());
-    }
-
-    [HttpPut]
-    [Route("{id}")]
-    public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateGameDto updateGameDto)
-    {
-        var updatedGame = await _gameRepository.UpdateAsync(id, updateGameDto);
-
-        if (updatedGame == null) return NotFound();
-
-        return Ok(updatedGame.ToGameDto());
-    }
-
-
-    [HttpDelete]
-    [Route("{id}")]
-    public async Task<IActionResult> Delete([FromRoute] int id)
-    {
-        var game = await _gameRepository.DeleteAsync(id);
-        if (game == null) return NotFound();
-        return NoContent();
+        var newGame = new Game
+        {
+            Id = igdbGame.Id == null ? -1 : igdbGame.Id.Value,
+            Name = igdbGame.Name,
+        };
+        await _gameRepository.CreateAsync(newGame);
+        return Ok(newGame);
     }
 }

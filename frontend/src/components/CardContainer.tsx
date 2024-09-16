@@ -12,7 +12,7 @@ export default function CardContainer({ gameList, onGameDelete } : Props) {
        <div className="container bg-magnolia justify-center w-5/6 h-5/6 flex flex-row flex-wrap overflow-auto m-2">
            { gameList.map((game) => {
                return (
-                   <GameCard key={game.id} game={game} size={"small"} onGameDelete={onGameDelete}/>
+                   <GameCard key={game.id} game={game} onGameDelete={onGameDelete}/>
                );
            })}
        </div>

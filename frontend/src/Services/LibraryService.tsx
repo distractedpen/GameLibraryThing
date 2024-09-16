@@ -1,7 +1,7 @@
 ﻿import axios from "axios";
 import {LibraryGet, LibraryPost} from "../Models/Library.ts";
 
-const api = "http://localhost:8004/api/library/";
+const api = "http://localhost:8004/api/library";
 
 export async function libraryGetApi()  {
     try {
@@ -11,17 +11,17 @@ export async function libraryGetApi()  {
     }
 }
 
-export async function libraryPostApi(gameName: string) {
+export async function libraryPostApi(gameId: number) {
     try {
-        return await axios.post<LibraryPost>(api + `?gameName=${gameName}`);
+        return await axios.post<LibraryPost>(api + `?gameId=${gameId}`);
     } catch (error) {
         console.log(error);
     }
 }
 
-export async function libraryDelete(gameName: string) {
+export async function libraryDelete(gameId: number) {
     try {
-        return await axios.delete<LibraryPost>(api + `?gameName=${gameName}`);
+        return await axios.delete<LibraryPost>(api + `?gameId=${gameId}`);
     } catch (error) {
         console.log(error);
     }
