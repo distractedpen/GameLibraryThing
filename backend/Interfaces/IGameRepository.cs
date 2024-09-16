@@ -8,6 +8,7 @@ public interface IGameRepository
     public Task<List<Game>> GetAllAsync();
 
     public Task<Game?> GetByIdAsync(int id);
+    public Task<Game?> GetByNameAsync(string name);
 
     public Task<Game> CreateAsync(Game game);
 
@@ -16,4 +17,5 @@ public interface IGameRepository
     public Task<Game?> DeleteAsync(int id);
 
     public Task<bool> GameExists(int id);
+    
 }

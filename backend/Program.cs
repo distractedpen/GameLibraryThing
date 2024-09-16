@@ -79,6 +79,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped<IGameRepository, GameRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IIGDBService, IGDBService>();
+builder.Services.AddScoped<ILibraryRepository, LibraryRespository>();
 
 builder.Services.AddIdentity<User, IdentityRole>(options =>
 {

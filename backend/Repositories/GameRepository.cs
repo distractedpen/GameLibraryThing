@@ -24,6 +24,11 @@ public class GameRepository : IGameRepository
     {
         return await _context.Games.FirstOrDefaultAsync(g => g.Id == id);
     }
+    
+    public async Task<Game?> GetByNameAsync(string name)
+    {
+        return await _context.Games.FirstOrDefaultAsync(g => g.Name == name);
+    }
 
     public async Task<Game> CreateAsync(Game gameModel)
     {
@@ -42,7 +47,6 @@ public class GameRepository : IGameRepository
 
         existingGame.Name = updateGameDto.Name;
         existingGame.Developer = updateGameDto.Developer;
-        existingGame.Status = updateGameDto.Status;
 
         await _context.SaveChangesAsync();
 
@@ -64,4 +68,5 @@ public class GameRepository : IGameRepository
     {
         return await _context.Games.AnyAsync(e => e.Id == id);
     }
+
 }

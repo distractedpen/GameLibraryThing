@@ -12,7 +12,6 @@ public static class GameMapper
             Id = game.Id,
             Name = game.Name,
             Developer = game.Developer,
-            Status = game.Status
         };
     }
 
@@ -22,7 +21,6 @@ public static class GameMapper
         {
             Developer = createGameDto.Developer,
             Name = createGameDto.Name,
-            Status = createGameDto.Status
         };
     }
 }
